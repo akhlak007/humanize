@@ -1,0 +1,21 @@
+{
+  "name": "academic-paper-humanizer",
+  "version": "1.0.0",
+  "description": "Antigravity skill for humanizing academic papers, reports, and code to pass AI detectors below 10% AI while preserving 100% technical logic.",
+  "type": "module",
+  "scripts": {
+    "detect": "node scripts/detect_zerogpt.mjs",
+    "unpack": "node scripts/unpack_docx.mjs"
+  },
+  "keywords": [
+    "antigravity",
+    "antigravity-skill",
+    "ai-humanizer",
+    "zerogpt",
+    "turnitin",
+    "academic-writing",
+    "stem-writing"
+  ],
+  "author": "Antigravity Community",
+  "license": "MIT"
+}
