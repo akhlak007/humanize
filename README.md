@@ -47,6 +47,12 @@ academic-paper-humanizer/
 
 ## ⚡ Quick Start
 
+### 0. Clone this Repository
+```bash
+git clone https://github.com/akhlak007/humanize.git
+cd humanize
+```
+
 ### 1. Test Text with ZeroGPT API
 ```bash
 node scripts/detect_zerogpt.mjs "path/to/extracted_text.txt"
