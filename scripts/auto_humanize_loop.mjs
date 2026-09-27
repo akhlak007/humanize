@@ -13,7 +13,7 @@ import path from 'path';
  * Usage:
  *   node auto_humanize_loop.mjs <file_path> [--threshold 10] [--json]
  *   node auto_humanize_loop.mjs --text "text to test" [--threshold 10] [--json]
- *   cat paper.txt | node auto_humanize_loop.mjs [--json]
+ *   node auto_humanize_loop.mjs --stdin [--threshold 10] [--json]
  */
 
 const args = process.argv.slice(2);
@@ -21,6 +21,7 @@ let filePath = null;
 let rawText = null;
 let threshold = 10.0;
 let jsonOutput = false;
+let useStdin = false;
 
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--threshold' && args[i + 1]) {
@@ -29,6 +30,8 @@ for (let i = 0; i < args.length; i++) {
     jsonOutput = true;
   } else if (args[i] === '--text' && args[i + 1]) {
     rawText = args[++i];
+  } else if (args[i] === '--stdin') {
+    useStdin = true;
   } else if (!filePath && !args[i].startsWith('-')) {
     filePath = args[i];
   }
@@ -43,16 +46,16 @@ if (rawText) {
     process.exit(1);
   }
   text = fs.readFileSync(filePath, 'utf8');
-} else {
+} else if (useStdin) {
   try {
-    text = fs.readFileSync(0, 'utf8'); // read from stdin if piped
+    text = fs.readFileSync(0, 'utf8');
   } catch (e) {
     text = '';
   }
 }
 
 if (!text || text.trim().length === 0) {
-  console.log("Usage: node auto_humanize_loop.mjs <file_path> [--threshold 10] [--json] [--text \"content\"]");
+  console.log("Usage: node auto_humanize_loop.mjs <file_path> [--threshold 10] [--json] [--text \"content\"] [--stdin]");
   process.exit(1);
 }
 
