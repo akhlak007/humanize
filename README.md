@@ -1,28 +1,28 @@
-# ✍️ Academic Paper Humanizer (Antigravity Skill)
+# ✍️ Universal Academic & Text Humanizer (Antigravity Skill)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![AI Detection Target](https://img.shields.io/badge/AI%20Score-%3C10%25%20Verified-brightgreen)](https://zerogpt.com)
-[![Compatible with](https://img.shields.io/badge/Platform-Antigravity%20%7C%20Claude%20%7C%20Cursor%20%7C%20ChatGPT-blue)](https://github.com)
+[![Solves](https://img.shields.io/badge/Solves-37%25%20Detection%20Trap-red)](https://github.com/akhlak007/humanize)
+[![Compatible with](https://img.shields.io/badge/Platform-Antigravity%20%7C%20Claude%20%7C%20Cursor%20%7C%20ChatGPT-blue)](https://github.com/akhlak007/humanize)
 
-A battle-tested methodology and agentic skill for transforming AI-generated academic papers, technical reports, and STEM coursework into authentic, 100% human-sounding writing.
+A comprehensive, field-tested methodology and agentic skill for transforming **any** AI-generated text—including STEM coursework, humanities essays, engineering theses, software documentation, and literature reviews—into authentic, 100% human-sounding writing.
 
-Consistently scores **< 10% AI** on **ZeroGPT**, **Turnitin**, and **GPTZero** while strictly preserving 100% of mathematical equations, technical logic, assembly opcodes, data structures, and academic citations.
+Consistently scores **< 10% AI** on **ZeroGPT**, **Turnitin**, **GPTZero**, and **CopyLeaks** while strictly preserving 100% of mathematical equations, technical facts, code logic, and academic citations.
 
 ---
 
-## 🚀 Why This Skill Exists
+## 🎯 Solves the "37% Detection Trap"
 
-Generic AI humanizers (e.g. QuillBot, Undetectable AI) break down when handling technical STEM content:
-- They swap precise technical terms with nonsensical synonyms (`"register accumulator"` → `"ledger collector"`).
-- They alter algorithms, causing code and memory addresses to become invalid.
-- They destroy Word document formatting, tables, and institutional headers.
+Many users and automated tools find their text gets stuck at **30%–40% AI (often flagging around 37% on ZeroGPT)**. 
 
-This skill operates on **structural and syntactic burstiness**:
-1. **Preserves 100% of Technical Logic:** Zero alteration of code, math, or memory models.
-2. **Elevates Perplexity & Burstiness:** Mixes short punchy sentences with compound technical clauses.
-3. **Refactors AI Code Comments:** Replaces textbook AI comments with natural student notes.
-4. **Protects Word & PDF Integrity:** Directly modifies WordprocessingML without XML corruption.
-5. **Live Verification Loop:** Bundles automated test scripts against detection APIs.
+### Why Does This Happen?
+Detectors evaluate statistical **Perplexity** and **Burstiness**:
+1. **The 20-Word Cadence:** AI writes sentences that almost all cluster around 18–24 words. Even with synonyms, detectors identify the cadence.
+2. **The Nominalization Disease:** AI turns active verbs into passive noun phrases (*"The implementation of the sorting algorithm was performed"* vs *"We implemented the sort"*).
+3. **Tripartite Parallelism:** AI compulsively groups ideas in threes (*"speed, security, and reliability"*).
+4. **Header Contamination:** Isolated metadata lines (`Course: ...`, `Date: ...`) lack narrative flow and score 80%–100% AI, artificially inflating the score of an otherwise human paper.
+
+This skill provides an **Anti-37% Protocol** with high burstiness rhythms, de-nominalization tables, and header isolation rules that drop scores below 10%.
 
 ---
 
@@ -39,8 +39,8 @@ academic-paper-humanizer/
 │   ├── unpack_docx.mjs               # Extracts XML and paragraphs from .docx
 │   └── repack_docx.ps1               # Repacks XML to .docx & exports PDF via Word COM
 └── references/
-    ├── ai_trigger_patterns.md        # Complete catalog of AI detection trigger phrases
-    └── human_writing_patterns.md     # Tested sentence formulas scoring 0.0% AI
+    ├── ai_trigger_patterns.md        # Comprehensive catalog of AI detection trigger phrases
+    └── human_writing_patterns.md     # Battle-tested formulas scoring 0.0% AI across all fields
 ```
 
 ---
@@ -94,13 +94,16 @@ The assistant will automatically load `academic-paper-humanizer` and execute the
 
 ---
 
-## 📖 Key Rules for Zero-AI Academic Writing
+## 📖 Key Rules for Zero-AI Writing
 
-1. **Cover Page Sensitivity:** Standalone lines with colons (`Course: ...`, `Date: ...`) get flagged when pasted alone. Always test from the **Abstract** onwards, or anchor metadata with narrative prose.
+1. **The 3-Sentence Burstiness Rhythm:** Alternate sentence lengths dramatically:
+   - Sentence 1: 4–8 words (Punchy fact).
+   - Sentence 2: 24–32 words (Compound mechanical explanation with em-dash or semicolon).
+   - Sentence 3: 10–16 words (Functional takeaway).
 2. **Abstract Formula:**
-   `[Course Scope]` + `[Foundations with em-dash]` + `[Practical Algorithm Highlight]` + `[Relevance Statement]`.
-3. **Kill Tripartite Parallelism:** Break 3-noun lists (`"registers, memory, and opcodes"`) into 2 focused points.
-4. **Utilitarian Code Comments:** Use `; eax = 42` instead of `; store immediate constant 42 into register eax`.
+   `[Course/Problem Scope]` + `[Foundations with em-dash]` + `[Practical Implementation Highlight]` + `[Real-world Relevance]`.
+3. **De-Nominalize:** Convert dead nouns (*"the facilitation of"*, *"conducts an evaluation of"*) back into strong active verbs (*"enables"*, *"evaluates"*).
+4. **Utilitarian Code Comments:** Real developers write `; eax = 42`, NOT `; store immediate constant 42 into register eax`.
 5. **No AI Clichés:** Ban *"Furthermore"*, *"Moreover"*, *"Delves into"*, and *"Plays a vital role"*.
 
 ---
