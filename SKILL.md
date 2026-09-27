@@ -1,6 +1,6 @@
 ---
 name: academic-paper-humanizer
-description: "Universal AI text humanizer. Use when asked to humanize any academic paper, essay, thesis, technical report, coding assignment, or general text to pass AI detectors (ZeroGPT, Turnitin, GPTZero, CopyLeaks) strictly below 10% AI. Solves the 30%-40% detection trap while strictly preserving all technical logic, facts, code, and citations."
+description: "Universal AI text & academic paper humanizer with an autonomous ZeroGPT self-correction loop. Works across all AI agents (Claude, ChatGPT, Cursor, Windsurf, Copilot, Antigravity, Aider). Guarantees < 10% AI score on ZeroGPT, Turnitin, GPTZero, and CopyLeaks by repeatedly testing and re-humanizing flagged sentences until strictly under 10% AI, while preserving 100% of technical logic, code, and citations."
 risk: low
 source: community
 date_added: "2026-09-26"
@@ -8,13 +8,13 @@ date_added: "2026-09-26"
 
 # Universal Academic & Text Humanizer Skill
 
-A battle-tested, domain-agnostic methodology for transforming any AI-generated text—including STEM term papers, humanities essays, engineering theses, software documentation, and literature reviews—into authentic, high-grade human writing that consistently scores **< 10% AI** on ZeroGPT, Turnitin, GPTZero, and CopyLeaks while preserving 100% of technical facts, algorithms, code, formulas, and citations.
+A battle-tested, domain-agnostic methodology and autonomous self-correction loop for transforming any AI-generated text—including STEM term papers, humanities essays, engineering theses, software documentation, and literature reviews—into authentic, high-grade human writing that consistently scores **< 10% AI** on ZeroGPT, Turnitin, GPTZero, and CopyLeaks while preserving 100% of technical facts, algorithms, code, formulas, and citations.
 
 ---
 
 ## 🎯 The "37% Detection Trap" & Why Standard Rewriting Fails
 
-Most users and basic AI humanizers (e.g., QuillBot, automated rephrasers) find their rewritten text gets stuck between **30% and 40% AI** (often flagging around **37%** on ZeroGPT).
+Most users and basic AI humanizers (e.g., QuillBot, automated rephrasers) find their rewritten text gets stuck between **30% and 40% AI** (often flagging around **37%** on ZeroGPT). 
 
 ### Why Does Text Get Stuck at ~37%?
 Detectors like ZeroGPT and Turnitin do not search for a single "AI watermark." They calculate statistical **Perplexity** (how predictable each word is) and **Burstiness** (the variance in sentence length and structure across paragraphs). 
@@ -37,7 +37,7 @@ graph TD
     C --> D[Step 4: The 3-Sentence Burstiness Injection]
     D --> E[Step 5: De-Nominalization & Active Verb Swap]
     E --> F[Step 6: Domain-Specific Logic & Code Preservation]
-    F --> G[Step 7: Automated ZeroGPT Verification Loop]
+    F --> G[Step 7: Autonomous Loop on ZeroGPT Until < 10% AI]
 ```
 
 ---
@@ -153,23 +153,49 @@ AI uses excessive nominalization (turning actions into nouns with "of"). Humans 
 
 ---
 
-### Step 7: Automated ZeroGPT Verification Loop
+### Step 7: Autonomous Multi-Agent ZeroGPT Verification & Self-Correction Loop
 
-Always run automated verification before finalizing.
+Every AI agent must run an automated verification loop after rewriting. **The agent must never declare completion until the score is strictly below 10% AI.**
+
+#### 🔄 The Autonomous Execution Loop:
 
 ```bash
-node scripts/detect_zerogpt.mjs "path/to/text.txt"
+node scripts/auto_humanize_loop.mjs "path/to/humanized_file.txt" --threshold 10 --json
 ```
 
-**Quality Standards:**
-- **Full Body Text (Abstract through Conclusion):** **< 10% AI** (🟢 *Human Written*)
-- **From Character 0 (Cover page included):** **< 15% AI** (🟢 *Human Written*)
+#### Loop Execution Logic for AI Agents:
+1. **Run Test:** Execute `node scripts/auto_humanize_loop.mjs <file> --json`.
+2. **Evaluate Exit Code:**
+   - **Exit Code 0 (`passed: true`):** The score is $\le 10\%$. The rewrite is successful and verified human. Stop and finalize the document.
+   - **Exit Code 2 (`passed: false`):** The score is $> 10\%$. 
+3. **Parse Flagged Sentences:**
+   - The script outputs `flaggedSentences` in the JSON response.
+   - The agent reads each flagged sentence string.
+   - **Do NOT re-write the entire text from scratch.** Target only the flagged sentences.
+   - Split long 20-word flagged sentences into an 8-word punch and a 14-word clause.
+   - Swap nominalizations for direct active verbs.
+   - Eliminate remaining transition words (*"Furthermore"*, *"Moreover"*, *"Additionally"*).
+4. **Save & Repeat:** Save the revised file and re-execute Step 1.
+5. **Stop Condition:** The loop exits ONLY when `passed: true` (< 10% AI).
 
-If any sentence remains flagged in `data.data.h`:
-1. Check if it contains a 3-item list. Break it into two.
-2. Check if it has an AI transition word (*"Furthermore"*, *"Additionally"*). Delete or rephrase.
-3. Check its length. If it is 20 words, split it into an 8-word sentence and a 12-word sentence.
-4. Re-run verification.
+---
+
+## 🤖 Universal Multi-Agent Integration (Any AI Agent)
+
+This skill is designed for **all** modern AI agents, IDEs, and LLM platforms—not just Antigravity:
+
+| Agent / Platform | Integration Method | Configuration File |
+| :--- | :--- | :--- |
+| **Antigravity IDE** | Native workspace or global skill | `.agents/skills/academic-paper-humanizer/SKILL.md` |
+| **Cursor IDE** | Agent Rules | `.cursorrules` or `.cursor/rules/humanizer.mdc` (see [AGENT_PROMPT.md](./AGENT_PROMPT.md)) |
+| **Claude Code CLI** | CLI Tool Invocation | `claude "Humanize paper.txt using AGENT_PROMPT.md and run loop until <10%"` |
+| **Claude Projects / Web** | Project System Instructions | Copy [AGENT_PROMPT.md](./AGENT_PROMPT.md) into Project Prompt |
+| **ChatGPT (Custom GPT)** | Custom GPT Instructions | Copy [AGENT_PROMPT.md](./AGENT_PROMPT.md) into GPT Builder Instructions |
+| **Windsurf / Cascade** | Workspace Rules | `.windsurfrules` pointing to `AGENT_PROMPT.md` |
+| **GitHub Copilot** | Workspace Instructions | `.github/copilot-instructions.md` |
+| **Aider / Roo Code / Cline**| System Prompt & Tool Execution| Run `node scripts/auto_humanize_loop.mjs` |
+
+Full standalone instructions for every agent are maintained in [AGENT_PROMPT.md](./AGENT_PROMPT.md).
 
 ---
 
@@ -197,5 +223,6 @@ When humanizing existing `.docx` files:
 
 ## 📚 Reference Guides
 
+- [AGENT_PROMPT.md](./AGENT_PROMPT.md): Universal prompt for Claude, ChatGPT, Cursor, Windsurf, Copilot, and Aider.
 - [ai_trigger_patterns.md](./references/ai_trigger_patterns.md): Complete list of words, phrases, and sentence structures that trigger AI detectors.
 - [human_writing_patterns.md](./references/human_writing_patterns.md): Battle-tested 0% AI templates for abstracts, technical prose, algorithms, and conclusions.

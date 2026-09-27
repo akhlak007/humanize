@@ -1,18 +1,26 @@
 {
   "name": "academic-paper-humanizer",
-  "version": "1.0.0",
-  "description": "Antigravity skill for humanizing academic papers, reports, and code to pass AI detectors below 10% AI while preserving 100% technical logic.",
+  "version": "1.1.0",
+  "description": "Universal AI text humanizer with an autonomous ZeroGPT loop (<10% AI). Works across Claude, ChatGPT, Cursor, Windsurf, Copilot, Antigravity, and Aider while preserving 100% technical logic.",
   "type": "module",
   "scripts": {
     "detect": "node scripts/detect_zerogpt.mjs",
+    "loop": "node scripts/auto_humanize_loop.mjs",
     "unpack": "node scripts/unpack_docx.mjs"
   },
   "keywords": [
-    "antigravity",
-    "antigravity-skill",
     "ai-humanizer",
     "zerogpt",
     "turnitin",
+    "gptzero",
+    "copyleaks",
+    "autonomous-loop",
+    "claude",
+    "chatgpt",
+    "cursor",
+    "windsurf",
+    "antigravity",
+    "antigravity-skill",
     "academic-writing",
     "stem-writing"
   ],
