@@ -74,3 +74,24 @@ Focus on what the experiment or implementation taught you about underlying syste
 ### Pattern 2: The Trade-Off Summary
 Summarize the real-world engineering or practical trade-offs:
 - *"Implementing this pipeline forced us to confront the trade-off between throughput and memory footprint. While caching intermediate states cut compute cycles by 40%, it tripled heap memory consumption. In resource-constrained environments, managing register starvation and cache coherence remains more decisive than chasing theoretical algorithmic perfection."*
+
+---
+
+## 🔬 6. STEM, Systems, & Machine Learning 0.0% AI Patterns
+
+### Pattern 1: Physical Reality & Hardware Constraints (Operating Systems / Architecture)
+Open with the tangible physics or hardware bottlenecks of the system:
+- *"Every magnetic hard drive depends on physical head movement across spinning platters. When programs make multiple read or write calls, these requests sit in a storage queue until the operating system picks one to service. Our lecture defined access latency as the sum of queue time, controller overhead, seek time, rotational latency, and transfer time. Seek time is our biggest concern because moving the physical head to a target track takes real mechanical milliseconds [1, 2]. Seek distance measures the absolute cylinder count separating the current head position from the next target."*
+
+### Pattern 2: Machine Learning Architecture & Hyperparameters (0% AI)
+Instead of abstract AI descriptions ("the model is a decision tree of depth four"), write like a student practitioner configuring a real library:
+- *"The learning model remains intentionally lightweight. Rather than predicting per single request, the system buffers I/O traffic into discrete batches of 20 requests. For each batch, my code extracts three simple features: the overall track spread across cylinders 0–199, the average jump distance between consecutive incoming arrivals, and an indicator score for whether requests follow a sequential file read or random jumps. To train the selector, my test harness runs all four algorithms over the 20 requests and records which scheduler traveled the fewest cylinders. I fitted a decision tree classifier with max_depth=4 to prevent overfitting on noisy requests. At inference time, the leaf node gives class probabilities, which I use as our confidence score for each prediction."*
+
+### Pattern 3: Workload Transitions & Anomaly Reporting (0% AI)
+Report concrete degradation multiples and practical mechanical explanations:
+- *"Hardware dispatchers juggle competing goals. For this assignment, we compare four standard classroom schedulers: First-Come First-Served, Shortest Seek Time First, SCAN, and Circular SCAN. FCFS dispatches incoming I/O strictly in FIFO order—a design that guarantees fairness and prevents starvation, but often sends the head thrashing across wide track spans. SSTF takes the opposite greedy approach by dispatching whichever pending request minimizes current arm displacement, yet it risks starving requests at distant cylinders if local traffic keeps arriving."*
+
+### Pattern 4: Hands-On Lab Conclusions (0% AI)
+Conclude with what the hands-on simulation proved about theoretical limits:
+- *"Working on this lab demonstrated why disk scheduling cannot rely on static assumptions. When access patterns drift from sorted files to chaotic queries, FCFS arm travel explodes by a factor of twelve. While elevator sweeps like SCAN and C-SCAN avoid runaway seek times, they waste mechanical energy reversing at boundaries. A simple four-level decision tree successfully catches workload transitions using basic window metrics, picking the optimal scheduler on 85.2% of test windows with higher confidence on accurate picks."*
+

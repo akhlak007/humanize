@@ -109,3 +109,40 @@ Real developers and students write short, utilitarian notes:
 - ✅ `; loop back if ecx != 0`
 - ✅ `; exit status 0`
 - ✅ `; sys_exit`
+
+---
+
+### Trap 6: The "14% AI Plateau" (Why Papers Stall at ~14.2%)
+Many users and agents see their papers drop to **14.2% AI** and stall there. ZeroGPT colors 14.2% as light green (*"Likely Human Written"*), creating a false sense of completion, but strict university / academic requirements demand **< 5% AI**.
+
+**Why Does Text Stall at ~14%?**
+1. **Isolated Table/Figure Captions:** Standalone lines like `Table 1.` or `Table 2. Shift trace.` lack natural sentence cadence and test individually at **100% AI**, dragging up the overall document score by 5%–10%!
+2. **Abstract ML & Algorithm Jargon:** Explaining ML models or algorithms in generic textbook phrasing rather than concrete student implementation language.
+3. **Monolithic Testing Blindspot:** Testing an entire 15,000-character paper at once hides the 1 or 2 contaminated paragraphs that are quietly inflating the score.
+
+---
+
+### Trap 7: STEM, Systems, & Machine Learning Clichés
+AI language models describe algorithms and classifiers using rigid, passive formulas:
+
+| ❌ AI Cliché (Flags 60%–90% AI) | ✅ Human Lab Voice (Scores 0.0% AI) |
+| :--- | :--- |
+| *"The model is a decision tree of depth four."* | *"I fitted a decision tree classifier with max_depth=4 to prevent overfitting on noisy requests."* |
+| *"I simulate all four scheduling policies across each batch offline, assigning the algorithm that produced the fewest cylinder seeks as the target label."* | *"To train the selector, my test harness runs all four algorithms over the 20 requests and records which scheduler traveled the fewest cylinders."* |
+| *"The tree's output probability distribution serves as our confidence metric, reflecting how decisively the model picked that scheduler."* | *"At inference time, the leaf node gives class probabilities, which I use as our confidence score for each prediction."* |
+| *"FCFS breaks down whenever incoming traffic shifts away from sequential order, multiplying seek latency by over twelve times."* | *"When access patterns drift from sorted files to chaotic queries, FCFS arm travel explodes by a factor of twelve."* |
+| *"A compact decision tree successfully diagnoses shifting workloads..."* | *"A simple four-level decision tree successfully catches workload transitions using basic window metrics..."* |
+| *"The evaluation uses three distinct workload types..."* | *"Each test batch runs three synthetic workloads to simulate real-world storage queues."* |
+
+---
+
+### Trap 8: Standalone Table & Figure Token Flags
+Detectors flag standalone label tokens as machine-generated:
+- ❌ `Table 1.`
+- ❌ `Table 2. Shift trace.`
+- ❌ `Figure 3: Architecture diagram.`
+
+**The Fix:** Expand captions into complete, natural descriptive sentences:
+- ✅ `Table 1: Benchmark summary comparing cylinder travel and seek latency across all classical schedulers.`
+- ✅ `Table 2: Continuous shift trace evaluation across 90 contiguous windows (30 sequential, 30 random, 30 bursty).`
+

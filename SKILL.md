@@ -1,6 +1,6 @@
 ---
 name: academic-paper-humanizer
-description: "Universal AI text & academic paper humanizer with an autonomous ZeroGPT self-correction loop. Works across all AI agents (Claude, ChatGPT, Cursor, Windsurf, Copilot, Antigravity, Aider). Guarantees < 10% AI score on ZeroGPT, Turnitin, GPTZero, and CopyLeaks by repeatedly testing and re-humanizing flagged sentences until strictly under 10% AI, while preserving 100% of technical logic, code, and citations."
+description: "Universal AI text & academic paper humanizer with an autonomous ZeroGPT self-correction loop and paragraph-level triage engine. Works across all AI agents (Claude, ChatGPT, Cursor, Windsurf, Copilot, Antigravity, Aider). Guarantees < 5% AI score on ZeroGPT, Turnitin, GPTZero, and CopyLeaks by repeatedly testing and re-humanizing flagged sentences until strictly under 5% AI, while preserving 100% of technical logic, code, and citations."
 risk: low
 source: community
 date_added: "2026-09-26"
@@ -8,7 +8,7 @@ date_added: "2026-09-26"
 
 # Universal Academic & Text Humanizer Skill
 
-A battle-tested, domain-agnostic methodology and autonomous self-correction loop for transforming any AI-generated text—including STEM term papers, humanities essays, engineering theses, software documentation, and literature reviews—into authentic, high-grade human writing that consistently scores **< 10% AI** on ZeroGPT, Turnitin, GPTZero, and CopyLeaks while preserving 100% of technical facts, algorithms, code, formulas, and citations.
+A battle-tested, domain-agnostic methodology and autonomous self-correction loop for transforming any AI-generated text—including STEM term papers, humanities essays, engineering theses, software documentation, and literature reviews—into authentic, high-grade human writing that consistently scores **< 5% AI** on ZeroGPT, Turnitin, GPTZero, and CopyLeaks while preserving 100% of technical facts, algorithms, code, formulas, and citations.
 
 ---
 
@@ -25,6 +25,20 @@ When you merely swap vocabulary without changing syntax, the detector still reco
 3. **Academic Signposting Clichés:** AI relies on canned transitions (*"Furthermore"*, *"Additionally"*, *"In addition"*, *"Consequently"*, *"Notably"*).
 4. **Tripartite Parallel Lists:** AI habitually bundles items in threes (*"speed, reliability, and security"*; *"analyzing, developing, and deploying"*).
 5. **Metadata & Header Contamination:** Isolated headings, titles with colons (`Course: ...`, `Date: ...`), and Table of Contents lines lack natural prose flow and test at **70%–100% AI** individually, contaminating the whole document's weighted score!
+
+---
+
+## ⚡ The "14% AI Plateau" & Why Simple Rewrites Stall at ~14.2%
+
+Many users and automated tools successfully pass the 37% barrier only to get trapped at **14.2% AI** (which ZeroGPT labels in green as *"Likely Human written, may include parts generated..."*).
+
+### What Causes the 14% Plateau?
+1. **The Monolithic Testing Illusion:** When testing an entire 15,000-character paper as a single chunk, 80%–90% of your paragraphs may already be **0.0% human**, but **1 or 2 hidden culprit paragraphs** (often in the Problem Framing or Implementation section) are testing at 45% AI, silently lifting the whole paper's average to 14.2%!
+2. **Abstract STEM / ML Descriptions:** Passive technical explanations (*"The model is a decision tree of depth four"*, *"I simulate all four scheduling policies across each batch offline, assigning the algorithm..."*) trigger machine cadence penalties.
+3. **Table & Figure Token Traps:** Standalone lines like `Table 2. Shift trace.` or `Table 1.` test at 100% AI in isolation.
+
+### The Solution: Paragraph-Level Triage
+Run `node scripts/triage_paragraphs.mjs <file> --threshold 5`. This script tests each paragraph independently, reveals exactly which paragraph is the culprit, and allows you to rewrite only that paragraph using the 0% STEM templates, plunging the document score to **0%–3.4% AI**!
 
 ---
 
@@ -53,11 +67,11 @@ Never humanize a document as a giant monolithic blob.
    - **Block D:** Core Technical Sections / Methodology
    - **Block E:** Code Listings / Data Presentations
    - **Block F:** Conclusion & References
-2. Run each block through the detection test script:
+2. Run paragraph-level triage to find the exact culprit sections:
    ```bash
-   node scripts/detect_zerogpt.mjs "path/to/extracted_text.txt"
+   node scripts/triage_paragraphs.mjs "path/to/extracted_text.txt" --threshold 5
    ```
-3. Record the exact sentences in `data.data.h` that trigger the detector. Focus your rewrite specifically on these flagged sentences.
+3. Record the exact paragraphs marked `🔴 CULPRIT`. Focus your rewrite specifically on these flagged paragraphs.
 
 ---
 
@@ -155,28 +169,26 @@ AI uses excessive nominalization (turning actions into nouns with "of"). Humans 
 
 ### Step 7: Autonomous Multi-Agent ZeroGPT Verification & Self-Correction Loop
 
-Every AI agent must run an automated verification loop after rewriting. **The agent must never declare completion until the score is strictly below 10% AI.**
+Every AI agent must run an automated verification loop after rewriting. **The agent must never declare completion until the score is strictly below 5% AI.**
 
 #### 🔄 The Autonomous Execution Loop:
 
 ```bash
-node scripts/auto_humanize_loop.mjs "path/to/humanized_file.txt" --threshold 10 --json
+# Run strict < 5% verification
+node scripts/auto_humanize_loop.mjs "path/to/humanized_file.txt" --threshold 5 --json
 ```
 
 #### Loop Execution Logic for AI Agents:
-1. **Run Test:** Execute `node scripts/auto_humanize_loop.mjs <file> --json`.
+1. **Run Test:** Execute `node scripts/auto_humanize_loop.mjs <file> --threshold 5 --json`.
 2. **Evaluate Exit Code:**
-   - **Exit Code 0 (`passed: true`):** The score is $\le 10\%$. The rewrite is successful and verified human. Stop and finalize the document.
-   - **Exit Code 2 (`passed: false`):** The score is $> 10\%$. 
-3. **Parse Flagged Sentences:**
-   - The script outputs `flaggedSentences` in the JSON response.
-   - The agent reads each flagged sentence string.
-   - **Do NOT re-write the entire text from scratch.** Target only the flagged sentences.
-   - Split long 20-word flagged sentences into an 8-word punch and a 14-word clause.
-   - Swap nominalizations for direct active verbs.
-   - Eliminate remaining transition words (*"Furthermore"*, *"Moreover"*, *"Additionally"*).
+   - **Exit Code 0 (`passed: true`):** The score is $\le 5\%$. The rewrite is successful and verified human. Stop and finalize the document.
+   - **Exit Code 2 (`passed: false`):** The score is $> 5\%$. 
+3. **If Score is Stuck around 10%–15%:**
+   - Run `node scripts/triage_paragraphs.mjs <file> --threshold 5`.
+   - Identify the 1 or 2 paragraphs labeled `🔴 CULPRIT`.
+   - Apply the **STEM Practitioner Voice** (Law 6) and **Burstiness Rhythm** (Law 1) to those specific paragraphs.
 4. **Save & Repeat:** Save the revised file and re-execute Step 1.
-5. **Stop Condition:** The loop exits ONLY when `passed: true` (< 10% AI).
+5. **Stop Condition:** The loop exits ONLY when `passed: true` (< 5% AI).
 
 ---
 

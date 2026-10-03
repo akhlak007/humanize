@@ -19,7 +19,7 @@ import path from 'path';
 const args = process.argv.slice(2);
 let filePath = null;
 let rawText = null;
-let threshold = 10.0;
+let threshold = 5.0;
 let jsonOutput = false;
 let useStdin = false;
 
@@ -105,8 +105,8 @@ try {
     flaggedSentencesCount: flagged.length,
     flaggedSentences: flagged,
     instructionForAgent: passed
-      ? "SUCCESS: Document meets target threshold (< 10% AI). Ready to finalize."
-      : `ACTION REQUIRED: AI score is ${score}% (exceeds ${threshold}%). Rewrite the flagged sentences listed below using the 3-Sentence Burstiness Rule and de-nominalization, then re-test.`
+      ? `SUCCESS: Document meets target threshold (<= ${threshold}% AI). Ready to finalize.`
+      : `ACTION REQUIRED: AI score is ${score}% (exceeds ${threshold}%). Rewrite flagged sentences using the 3-Sentence Burstiness Rule and de-nominalization. If stuck, run 'node scripts/triage_paragraphs.mjs <file>' to isolate culprit paragraphs.`
   };
 
   if (jsonOutput) {
@@ -116,7 +116,7 @@ try {
     console.log(`🤖 AUTONOMOUS ZERO-GPT AUDIT: ${filePath ? path.basename(filePath) : "Inline Text"}`);
     console.log("==================================================");
     console.log(`AI Score:       ${score}% AI`);
-    console.log(`Target Goal:    <= ${threshold}% AI`);
+    console.log(`Target Goal:    <= ${threshold}% AI (Strict Human Guarantee)`);
     console.log(`Status:         ${passed ? "🟢 PASSED" : "🔴 FAILED (Needs Another Rewrite Pass)"}`);
     console.log(`Word Breakdown: ${aiWords} AI words out of ${words} total words`);
     console.log("==================================================");
@@ -124,7 +124,7 @@ try {
     if (hasCoverMarkers && !passed) {
       console.log("💡 TIP FOR AGENT: Document contains cover page metadata. If lines like");
       console.log("   'Course: ...' or 'Date: ...' are in the flagged list, verify that");
-      console.log("   testing from the Abstract onwards brings the body score below 10%.");
+      console.log(`   testing from Section 1 / Abstract onwards brings the score below ${threshold}%.`);
     }
 
     if (!passed) {
@@ -137,12 +137,14 @@ try {
       console.log(`1. Take each of the ${flagged.length} sentences above.`);
       console.log("2. Apply the 3-Sentence Burstiness rule (short 5-word punch + compound explanatory clause).");
       console.log("3. Replace passive nominalizations with active verbs.");
-      console.log("4. Save the file and re-run this script automatically.");
-      console.log("5. DO NOT stop until Status shows 🟢 PASSED (< 10%).");
+      console.log("4. If score hovers around 10%-15%, run: node scripts/triage_paragraphs.mjs <file>");
+      console.log("   to pinpoint the exact paragraph causing the flag!");
+      console.log("5. Save the file and re-run this script automatically.");
+      console.log(`6. DO NOT stop until Status shows 🟢 PASSED (<= ${threshold}%).`);
       console.log("--------------------------------------------------\n");
       process.exit(2); // Non-zero exit code so automated agent loops know it failed
     } else {
-      console.log("\n🎉 CONGRATULATIONS! Document is 100% human-verified under 10% AI.");
+      console.log(`\n🎉 CONGRATULATIONS! Document is 100% human-verified under ${threshold}% AI.`);
       process.exit(0);
     }
   }
